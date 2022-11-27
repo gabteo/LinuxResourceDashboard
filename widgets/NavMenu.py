@@ -5,7 +5,8 @@ class NavMenu(customtkinter.CTkFrame):
 #classe herdeira (no python chama-se subclasse) de customtkinter.CTkFrame 
 
     def __init__(self, master) -> None:
-        super().__init__()  # construtor da classe herdada, no caso o Frame
+        print("Criando NavMenu...")
+        super().__init__(master)  # construtor da classe herdada, no caso o Frame
         self.width = 180
         self.master = master
         self.corner_radius = 0
@@ -46,6 +47,12 @@ class NavMenu(customtkinter.CTkFrame):
                                                 text="Informações do Sistema",
                                                 command=self.sysInfoBtn_event)
         self.sysInfoBtn.grid(row=5, column=0, pady=10, padx=20)
+
+        self.versionLabel = customtkinter.CTkLabel(master=self, text="versão 0.1", text_color=("gray50"))
+        self.versionLabel.grid(row=10, column=0, pady=10, padx=20)
+
+        print("NavMenu criado.")
+
         
 
     def homeBtn_event(self):

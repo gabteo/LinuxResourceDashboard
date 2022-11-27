@@ -2,7 +2,8 @@
 from tkinter import *
 import tkinter.messagebox
 import customtkinter
-from NavMenu import NavMenu
+from widgets.NavMenu import NavMenu
+from widgets.DashboardFrame import DashboardFrame
 
 
 customtkinter.set_appearance_mode("Dark")  # Modes: "System" (standard), "Dark", "Light"
@@ -28,24 +29,18 @@ class App(customtkinter.CTk):
         # ============ create two frames ============
         # NavMenu e dashboardFrame
         # configure grid layout (2x1)
+        self.grid_columnconfigure(0)
         self.grid_columnconfigure(1, weight=1)
         self.grid_rowconfigure(0, weight=1)
 
         self.navMenu = NavMenu(self)
-        #self.dashboardFrame = DashboardFrame(self)
+        self.navMenu.grid(row=0, column=0)
 
-        self.navMenu.grid()
-        #self.dashboardFrame.grid()
+        self.dashboardFrame = DashboardFrame(self)
+        self.dashboardFrame.grid(row=0, column=1)
 
 
     def on_closing(self, event=0):
         self.destroy()
 
 
-
-
-
-""" class DashboardFrame():
-    def __init__(self, app: App) -> None:
-        self.dashboardFrame = customtkinter.CTkFrame(master=app)
-        self.dashboardFrame.grid(row=0, column=0, sticky="nswe")   """ 
