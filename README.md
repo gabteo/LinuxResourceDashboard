@@ -63,6 +63,11 @@ by Samuel Mthembo
 
 https://youtube.com/playlist?list=PLRUcPloZy-I_OLpvphqnz5zaqKRHncoZ6
 
+#### Python GUI's With TKinter
+by Codemy
+
+https://youtube.com/playlist?list=PLCC34OHNcOtoC6GglhF3ncJ5rLwQrLGnV
+
 
 ### outras dashboards linux
 https://afaqurk.github.io/linux-dash/#/system-status
@@ -96,6 +101,12 @@ setxkbmap -model abnt2 -layout br -variant abnt2
 ```
 
 Mais detalhes em https://github.com/microsoft/wslg/issues/27
+
+#### Shell commands in Python
+
+https://janakiev.com/blog/python-shell-commands/
+
+
 
 ## Design
 
