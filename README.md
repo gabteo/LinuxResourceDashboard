@@ -108,9 +108,14 @@ https://janakiev.com/blog/python-shell-commands/
 
 
 
-## Design
+## Interface
 
 ### Layout da tela principal
 
 ![Layout da tela principal](/assets/designReference/MainScreen.jpg)
+
+Interface até o momento:
+
+![Interface da tela principal](/assets/designReference/screenshoot-v0.jpg)
+
 
