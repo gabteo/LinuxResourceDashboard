@@ -28,7 +28,16 @@ class widgetTopCommand(customtkinter.CTkFrame):
             justify=tkinter.LEFT, 
             text_color=("gray75"))
         
-        
+        """ self.topLabel = customtkinter.CTkTextbox(master=self, 
+            text=self.topCmdOutput, 
+            #height=100, 
+            #width = 100, 
+            text_font=('Roboto', 12),
+            corner_radius=6, 
+            fg_color=("white", "gray25"),  # <- custom tuple-color
+            justify=tkinter.LEFT, 
+            text_color=("gray75")) """
+
         self.grid(row=0, column=0, sticky="nswe")
         self.topLabel.grid(row=0, column=0, sticky="nwe", pady=10, padx=10)
 
