@@ -7,6 +7,7 @@ https://towardsdatascience.com/an-easy-beginners-guide-to-sqlite-in-python-and-p
 import sqlite3 as db
 import time
 import logging
+import os
 
 
 class database():
@@ -19,9 +20,11 @@ class database():
 
         try:
             #self.conn = db.connect(':memory:') #cria database na memória
-            self.conn = db.connect(self.dbPath) #cria database na memória
+            self.conn = db.connect(self.dbPath, check_same_thread = False) #cria database na memória
         except db.Error as e:
+            self.log.exception("Erro ao abrir a conexão com o db.")
             print(e)
+            return
         
         self.c = self.conn.cursor()
 
@@ -32,9 +35,19 @@ class database():
     def createCPUTable(self):
         self.log.info("Criando tabela da CPU...")
         try:
-            self.c.execute("CREATE TABLE IF NOT EXISTS cpu (memid INTEGER PRIMARY KEY, memtotal INT, memfree INT, memavailable INT, swaptotal INT, swapfree INT)")
+            query = "CREATE TABLE IF NOT EXISTS cpu (cpuid INTEGER PRIMARY KEY, cpu_usage REAL)"
+            self.c.execute(query)
         except db.Error:
             self.log.exception("Erro ao criar tabela da CPU")
+    
+    def CPUTableAddCores(self, cores):
+        for core in range(cores):
+            try:
+                query = f"ALTER TABLE cpu ADD cpu{core} REAL"
+                self.c.execute(query)
+            except db.Error:
+                self.log.exception("Erro ao adicionar core na tabela da CPU. Tabela já tem core")
+                #self.log.exception(db.Error)
 
     def createMemTable(self):
         self.log.info("Criando tabela da memória...")
@@ -47,23 +60,37 @@ class database():
     def createFileSystemTable(self):
         self.log.info("Criando tabela do sistema de arquivos...")
         try:
-            self.c.execute("CREATE TABLE IF NOT EXISTS filesystem (memid INTEGER PRIMARY KEY, memtotal INT, memfree INT, memavailable INT, swaptotal INT, swapfree INT)")
+            self.c.execute("CREATE TABLE IF NOT EXISTS filesystem (memid INT PRIMARY KEY, memtotal INT, memfree INT, memavailable INT, swaptotal INT, swapfree INT)")
         except db.Error:
             self.log.exception("Erro ao criar tabela do sistema de arquivos")
 
         self.log.info("Banco de dados criado.")
 
 
-    def appendMemTable(self, memArray):
+    def memTableAddRow(self, memArray: list):
         sql = """ INSERT INTO mem(memid, memtotal, memfree, memavailable, swaptotal, swapfree)
                 VALUES(?,?,?,?,?,?)"""
-        self.c.execute(sql, memArray)
-        pass
+        memArray.insert(0, self.getTimestamp())
+        try:
+            self.c.execute(sql, memArray)
+            self.conn.commit()
+        except db.Error:
+            self.log.exception("Erro ao adicionar row na tabela mem")
+        return
 
     def getTimestamp(self):
-        return time.time()
+        timestamp = int(time.time())
+        #print (timestamp)
+        return timestamp
 
 
     def __del__(self):
-        pass
+        #os.remove('systemStats.db')
+        try:
+            #self.conn = db.connect(':memory:') #cria database na memória
+            self.conn.close
+        except db.Error as e:
+            self.log.exception("Erro ao fechar a conexão com o db.")
+
+        return
 
