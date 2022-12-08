@@ -152,3 +152,4 @@ cython_debug/
 #.idea/
 dashApp/systemStats.db
 .vscode/settings.json
+.vscode/settings.json

@@ -8,7 +8,7 @@ def main():
     loggerSetup()
     log = logging.getLogger()
     log.info("main init")
-    db = database.database()
+    db = database()
     memStats = systemData(db)
     
 
