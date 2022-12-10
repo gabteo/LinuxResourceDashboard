@@ -5,6 +5,8 @@ import sched, time
 from killSig import killSig
 from memData import memData
 from cpuData import cpuData
+from processesData import processesData
+
 
 class systemData():
     def __init__(self, db) -> None:
@@ -14,6 +16,7 @@ class systemData():
 
         self.memoryData = memData(db)
         self.cpuData = cpuData(db)
+        self.processesData = processesData(db)
 
         # criar thread
         self.threadName = "updateStats"
@@ -37,6 +40,7 @@ class systemData():
         memStatsList, _ = self.memoryData.getMemStats()
         self.memoryData.saveMemStats(db, memStatsList)
         self.cpuData.getTotalUsage()
+        self.processesData.getProcesses()
         pass
 
     
