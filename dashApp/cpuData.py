@@ -7,29 +7,11 @@ class cpuData():
     def __init__(self, db) -> None:
         self.log = logging.getLogger(__name__)
         #self.getCpuStats()
-        self.getNumberOfCores()
+        #self.getNumberOfCores()
+        self.getCpuInfo()
+        self.cores = self.getCores()
         db.CPUTableAddCores(self.cores)
         pass
-
-    def getCpuStats(self):
-        self.cores = self.getNumberOfCores()
-        self.totalUsage = self.getTotalUsage()
-
-        dataToFetch = ["MemFree", "MemTotal", "MemAvailable", "SwapTotal", "SwapFree"]
-        self.statsDict = dict.fromkeys(dataToFetch)
-        for stat in dataToFetch:
-            cmd = "cat /proc/meminfo | grep {0} ".format(stat)
-            cmd = cmd + "| awk '{print $2}'"
-            
-            self.log.info(f"Executando comando: '{cmd}'")
-            output = self.execCmd(cmd)
-
-            print(f"{stat}\t\t {output} kB")
-            self.statsDict[stat] = output
-            
-        self.statsList = list(self.statsDict.values())
-
-        return self.statsList, self.statsDict
 
     def getNumberOfCores(self):
         # man 2b
@@ -52,3 +34,71 @@ class cpuData():
         proc = subprocess.Popen([cmd], stdout=subprocess.PIPE, shell=True, universal_newlines=True)
         (out, err) = proc.communicate()
         return out.strip()
+
+    
+
+    def getCpuInfo(self):
+        dataToFetch = ['"Architecture"', '"CPU(s):"', '"Thread(s) per core"', '"Core(s) per socket"', '"Model name"', '"CPU MHz"']
+        self.cpuInfoDict = dict.fromkeys(dataToFetch)
+        for field in dataToFetch:
+            cmd = "lscpu | grep {0} ".format(field)
+            cmd = cmd + "| awk -F ':' '{print $2}'"
+            
+            self.log.info(f"Executando comando: '{cmd}'")
+            output = self.execCmd(cmd)
+
+            print(f"{field}\t\t {output}")
+            self.cpuInfoDict[field] = output
+            
+        self.cpuInfoList = list(self.cpuInfoDict.values())
+
+        return self.cpuInfoList, self.cpuInfoDict
+
+
+    def getArchitecture(self):
+        #self.getCpuInfo()
+        try:
+            self.architecture = self.cpuInfoDict['"Architecture"']
+        except:
+            self.log.error("getCpuInfo() ainda não foi executada!")
+        return self.architecture
+
+    def getCores(self):
+        #self.getCpuInfo()
+        try:
+            self.cores = self.cpuInfoDict['"CPU(s):"']
+        except:
+            self.log.error("getCpuInfo() ainda não foi executada!")
+        return self.cores
+
+    def getThreadsPerCore(self):
+        #self.getCpuInfo()
+        try:
+            self.ThreadsPerCore = self.cpuInfoDict['"Thread(s) per core"']
+        except:
+            self.log.error("getCpuInfo() ainda não foi executada!")
+        return self.ThreadsPerCore
+
+    def getCoresPerSocket(self):
+        #self.getCpuInfo()
+        try:
+            self.coresPerSocket = self.cpuInfoDict['"Core(s) per socket"']
+        except:
+            self.log.error("getCpuInfo() ainda não foi executada!")
+        return self.coresPerSocket
+
+    def getModelNamet(self):
+        #self.getCpuInfo()
+        try:
+            self.modelName = self.cpuInfoDict['"Model name"']
+        except:
+            self.log.error("getCpuInfo() ainda não foi executada!")
+        return self.modelName
+
+    def getCpuMhz(self):
+        #self.getCpuInfo()
+        try:
+            self.cpuMhz = self.cpuInfoDict['"CPU MHz"']
+        except:
+            self.log.error("getCpuInfo() ainda não foi executada!")
+        return self.cpuMhz
