@@ -28,8 +28,7 @@ class systemData():
 
         return
 
-    def saveData(self):
-        pass
+    
     
     def execCmd(self, cmd: str):
         proc = subprocess.Popen([cmd], stdout=subprocess.PIPE, shell=True, universal_newlines=True)
@@ -41,6 +40,7 @@ class systemData():
         self.memoryData.saveMemStats(db, memStatsList)
         self.cpuData.getTotalUsage()
         self.processesData.getProcesses()
+        self.processesData.sortProcesses()
         pass
 
     

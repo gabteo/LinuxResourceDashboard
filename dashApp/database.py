@@ -30,7 +30,6 @@ class database():
 
         self.createCPUTable()
         self.createMemTable()
-        self.createFileSystemTable()        
 
     def createCPUTable(self):
         self.log.info("Criando tabela da CPU...")
@@ -40,8 +39,8 @@ class database():
         except db.Error:
             self.log.exception("Erro ao criar tabela da CPU")
     
-    def CPUTableAddCores(self, cores):
-        for core in range(cores):
+    def CPUTableAddCores(self, cores: str):
+        for core in range(int(cores.strip())):
             try:
                 query = f"ALTER TABLE cpu ADD cpu{core} REAL"
                 self.c.execute(query)
@@ -57,14 +56,7 @@ class database():
             self.log.exception("Erro ao criar tabela da memória")
 
 
-    def createFileSystemTable(self):
-        self.log.info("Criando tabela do sistema de arquivos...")
-        try:
-            self.c.execute("CREATE TABLE IF NOT EXISTS filesystem (memid INT PRIMARY KEY, memtotal INT, memfree INT, memavailable INT, swaptotal INT, swapfree INT)")
-        except db.Error:
-            self.log.exception("Erro ao criar tabela do sistema de arquivos")
 
-        self.log.info("Banco de dados criado.")
 
 
     def memTableAddRow(self, memArray: list):

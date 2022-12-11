@@ -23,7 +23,7 @@ class memData():
             self.statsDict[stat] = output
             
         self.statsList = list(self.statsDict.values())
-
+        
         return self.statsList, self.statsDict
 
     def saveMemStats(self, db: database, memStatsList: list):
