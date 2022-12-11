@@ -40,7 +40,7 @@ class systemData():
         self.memoryData.saveMemStats(db, memStatsList)
         self.cpuData.getTotalUsage()
         self.processesData.getProcesses()
-        self.processesData.sortProcesses()
+        self.processesData.sortProcesses("PID")
         pass
 
     

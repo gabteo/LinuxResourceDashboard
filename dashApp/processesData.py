@@ -15,7 +15,7 @@ class processesData():
         self.topColumns = Enum('topColumns', ['PID', 'USER', 'PRIORITY', 'NICE', 'VIRTUALMEM', 'RESIDENTMEM', 'SHAREDMEM', 'STATUS', 'CPU', 'MEM', 'TIME', 'COMMAND'], start=0)
         
         self.getProcesses()
-        self.order = topColumns.USER.name
+        self.order = self.topColumns.RESIDENTMEM.name
         self.sortProcesses(self.order)
 
         return
@@ -37,12 +37,29 @@ class processesData():
             intPID = int(self.procList[process][self.topColumns.PID.value].strip())
             self.procList[process][self.topColumns.PID.value] = intPID
 
-            
+            intPri = int(self.procList[process][self.topColumns.PRIORITY.value].strip())
+            self.procList[process][self.topColumns.PRIORITY.value] = intPri
+
+            intPri = int(self.procList[process][self.topColumns.NICE.value].strip())
+            self.procList[process][self.topColumns.NICE.value] = intPri
+
+            intPri = int(self.procList[process][self.topColumns.VIRTUALMEM.value].strip())
+            self.procList[process][self.topColumns.VIRTUALMEM.value] = intPri
+
+            intPri = int(self.procList[process][self.topColumns.RESIDENTMEM.value].strip())
+            self.procList[process][self.topColumns.RESIDENTMEM.value] = intPri
+
+            intPri = int(self.procList[process][self.topColumns.SHAREDMEM.value].strip())
+            self.procList[process][self.topColumns.SHAREDMEM.value] = intPri
+
+            intPri = float(self.procList[process][self.topColumns.CPU.value].strip())
+            self.procList[process][self.topColumns.CPU.value] = intPri
+
+            intPri = float(self.procList[process][self.topColumns.MEM.value].strip())
+            self.procList[process][self.topColumns.MEM.value] = intPri
 
 
-
-
-            self.procDicts.append(dict(zip(topColumnsNames, self.procList[process]))) 
+            self.procDicts.append(dict(zip(self.topColumnsNames, self.procList[process]))) 
 
 
             #print(self.procList[process])
