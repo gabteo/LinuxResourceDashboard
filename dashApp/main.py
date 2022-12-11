@@ -9,7 +9,7 @@ def main():
     log = logging.getLogger()
     log.info("main init")
     db = database()
-    systemData = systemData(db)
+    data = systemData(db)
     
 
 

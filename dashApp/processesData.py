@@ -37,17 +37,7 @@ class processesData():
             intPID = int(self.procList[process][self.topColumns.PID.value].strip())
             self.procList[process][self.topColumns.PID.value] = intPID
 
-            intPID = int(self.procList[process][self.topColumns.PID.value].strip())
-            self.procList[process][self.topColumns.PID.value] = intPID
-
-            intPID = int(self.procList[process][self.topColumns.PID.value].strip())
-            self.procList[process][self.topColumns.PID.value] = intPID
-
-            intPID = int(self.procList[process][self.topColumns.PID.value].strip())
-            self.procList[process][self.topColumns.PID.value] = intPID
-
-            intPID = int(self.procList[process][self.topColumns.PID.value].strip())
-            self.procList[process][self.topColumns.PID.value] = intPID
+            
 
 
 
