@@ -76,7 +76,7 @@ class processesData():
 
     def sortProcesses(self, keyProc = "PID"):
         self.procDicts.sort(key=lambda x: x[keyProc])
-        print(*self.procDicts, sep = "\n")
+        #print(*self.procDicts, sep = "\n")
 
         return
 

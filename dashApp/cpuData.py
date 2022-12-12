@@ -27,7 +27,7 @@ class cpuData():
         self.totalUsage = 100 - float(self.execCmd(cmd))
         self.totalUsage = float(f"{self.totalUsage:0.3f}")
         #print(f"{self.totalUsage:0.2f}")
-        print(self.totalUsage)
+        #print(self.totalUsage)
         return self.totalUsage
 
     def execCmd(self, cmd: str) -> str:

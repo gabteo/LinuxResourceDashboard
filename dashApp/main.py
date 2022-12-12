@@ -8,10 +8,10 @@ def main():
     loggerSetup()
     log = logging.getLogger()
     log.info("main init")
-    db = database()
-    data = systemData(db)
+db = database()
+data = systemData(db)
     
-
+print("numero cores" + data.cpuData.getCores())
 
 if __name__ == '__main__':
     main()

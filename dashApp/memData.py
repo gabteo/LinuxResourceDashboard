@@ -17,9 +17,9 @@ class memData():
             cmd = cmd + "| awk '{print $2}'"
             
             self.log.info(f"Executando comando: '{cmd}'")
-            output = self.execCmd(cmd)
+            output = int(self.execCmd(cmd))
 
-            print(f"{stat}\t\t {output} kB")
+            #print(f"{stat}\t\t {output} kB")
             self.statsDict[stat] = output
             
         self.statsList = list(self.statsDict.values())
