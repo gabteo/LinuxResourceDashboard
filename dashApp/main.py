@@ -15,3 +15,6 @@ print("numero cores" + data.cpuData.getCores())
 
 if __name__ == '__main__':
     main()
+
+
+    #df -h --type=ext4  --output

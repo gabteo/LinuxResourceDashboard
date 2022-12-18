@@ -1,6 +1,6 @@
 import dash
 import pandas as pd
-from dash import dcc, html, Input, Output, dash_table
+from dash import dcc, html, Input, Output, State, dash_table
 from database import database
 from systemData import *
 
@@ -35,26 +35,8 @@ app.layout = html.Div(
       ],
       className="header"
     ),
-    dcc.Tabs(id="tabs", value="inicio", children=[
-      dcc.Tab(label='Início', value='inicio', className='custom-tab', selected_className = 'custom-tab-selected'),
-      #dcc.Tab(label='CPU', value='cpu', className='custom-tab', selected_className = 'custom-tab-selected'),
-      #dcc.Tab(label='Memória', value='memoria', className='custom-tab', selected_className = 'custom-tab-selected'),
-      #dcc.Tab(label='Informações', value='info', className='custom-tab', selected_className = 'custom-tab-selected'),
-      dcc.Tab(label='Terminal', value='terminal', className='custom-tab', selected_className = 'custom-tab-selected'),
-    ]),
-    html.Div(id='tabs-content', className="wrapper"),
-    dcc.Interval(
-      id='interval-component',
-      interval=1*1000,
-      n_intervals = 0
-    )
-  ])
-
-@app.callback(Output('tabs-content', 'children'),
-              Input('tabs', 'value'))
-def render_content(tab):
-  if tab == 'inicio':
-    return html.Div(
+    html.Div(children=[
+      html.Div(
       children = [
         html.Div(
           children= [
@@ -79,8 +61,99 @@ def render_content(tab):
         ),
         html.Div(
           children= [
+            html.Div(children=["Discos"], className="card-title"),
+            dcc.Graph(
+            id="discos-inicio-chart",
+            #config={"displayModeBar": False},
+            )
+          ],
+          className="card card-menor",
+        ),
+        #labels
+        html.Div(
+          children= [
+            html.Div(children= [
+              html.Div(children=["Uso (%)"], className="card-mini-title"),
+              html.Div(children=[""], id="label-cpu-usado", className="card-mini-content")
+            ], className="card card-mini-cpu"),
+          ],
+          className="card card-menor",
+        ),
+        html.Div(
+          children= [
+            html.Div(children= [
+              html.Div(children=["Mem. Total (kB)"], className="card-mini-title"),
+              html.Div(children=[""], id="label-mem-tot", className="card-mini-content")
+            ], className="card card-mini-mem"),
+            html.Div(children= [
+              html.Div(children=["Mem. Usada (kB)"], className="card-mini-title"),
+              html.Div(children=[""], id="label-mem-usd", className="card-mini-content")
+            ], className="card card-mini-mem"),
+            html.Div(children= [
+              html.Div(children=["Swap total (kB)"], className="card-mini-title"),
+              html.Div(children=[""], id="label-swp-tot", className="card-mini-content")
+            ], className="card card-mini-mem"),
+            html.Div(children= [
+              html.Div(children=["Swap Usada (kB)"], className="card-mini-title"),
+              html.Div(children=[""], id="label-swp-usd", className="card-mini-content")
+            ], className="card card-mini-mem"),
+          ],
+          className="card card-menor",
+        ),
+        html.Div(
+          children= [
+            html.Div(children= [
+              html.Div(children=["Disco 1 (kB)"], className="card-mini-title"),
+              html.Div(children=["1"], id="label-disc1-usd", className="card-mini-content")
+            ], className="card card-mini-disc"),
+            html.Div(children= [
+              html.Div(children=["Disco 2 (kB)"], className="card-mini-title"),
+              html.Div(children=["2"], id="label-disc2-usd", className="card-mini-content")
+            ], className="card card-mini-disc"),
+            html.Div(children= [
+              html.Div(children=["Disco 3 (kB)"], className="card-mini-title"),
+              html.Div(children=["3"], id="label-disc3-usd", className="card-mini-content")
+            ], className="card card-mini-disc"),
+          ],
+          className="card card-menor",
+        ),
+        html.Div(
+          children= [
+            html.Div(children=["Sistema"], className="card-title"),
+            html.Div(children= [
+              html.Div(children=["Processador"], className="card-mini-title"),
+              html.Div(children=[f"{data.cpuData.getModelNamet()}"], className="card-mini-content")
+            ], className="card card-mini-info-proc"),
+            html.Div(children= [
+              html.Div(children=["Arquitetura"], className="card-mini-title"),
+              html.Div(children=[f"{data.cpuData.getArchitecture()}"], className="card-mini-content")
+            ], className="card card-mini-info"),
+            html.Div(children= [
+              html.Div(children=["Frequência (MHz)"], className="card-mini-title"),
+              html.Div(children=[f"{data.cpuData.getCpuMhz()}"], className="card-mini-content")
+            ], className="card card-mini-info"),
+            html.Div(children= [
+              html.Div(children=["Cores"], className="card-mini-title"),
+              html.Div(children=[f"{data.cpuData.getNumberOfCores()}"], className="card-mini-content")
+            ], className="card card-mini-info"),
+            html.Div(children= [
+              html.Div(children=["Cores por socket"], className="card-mini-title"),
+              html.Div(children=[f"{data.cpuData.getCoresPerSocket()}"], className="card-mini-content")
+            ], className="card card-mini-info"),
+            html.Div(children= [
+              html.Div(children=["Threads por core"], className="card-mini-title"),
+              html.Div(children=[f"{data.cpuData.getThreadsPerCore()}"], className="card-mini-content")
+            ], className="card card-mini-info"),
+            
+          ],
+          className="card card-info",
+        ),
+        #processos
+        html.Div(
+          children= [
             html.Div(children=["Processos"], className="card-title"),
-            dash_table.DataTable(
+            html.Div(children=[
+              dash_table.DataTable(
               id="tbl_processos", 
               columns=[
                 {'name': 'PID', 'id': 'PID'}, 
@@ -93,65 +166,39 @@ def render_content(tab):
               sort_action="native",
               sort_mode="multi",
               )
-            # html.Table([
-            #   html.Thead([
-            #     html.Tr([
-            #       html.Th('Nome', style = {"width": "50%"}),
-            #       html.Th('Status'),
-            #       html.Th('CPU'),
-            #       html.Th('Memória'),
-            #     ]),
-            #   ]),
-            #   html.Tbody([
-            #     html.Tr([
-            #       html.Td('teste'),
-            #       html.Td('teste'),
-            #       html.Td('teste'),
-            #       html.Td('teste'),
-            #     ]),
-            #   ])
-            # ])
+            ])
+            
           ],
           className="card card-table",
         ),
+        #terminal
         html.Div(
           children= [
-            html.Div(children=["Sistema"], className="card-title"),
-            f"{data.cpuData.getModelNamet()} | Número de Cores: {data.cpuData.getNumberOfCores()} | Cores por socket: {data.cpuData.getCoresPerSocket()} | "
+            html.Div(children=["Terminal"], className="card-title"),
+            html.Div(children=[
+              dcc.Input(id='comando', placeholder='Digite o comando', type='text', className="input-comando"),
+              html.Button(id='submit-button', type='submit', children='Rodar comando', className="btn-comando"),
+              html.Div(id='output_div')
+            ], className="card-terminal-content")
           ],
-          className="card card-info",
+          className="card card-table",
         ),
+        
       ]
     )
-  elif tab == 'cpu':
-    return html.Div(children = [
-      "teste",
-        dcc.Graph(id='example', 
-        figure = {
-          'data': [
-            {
-              'x': [1,2,3], 
-              'y' : [5,6,7], 
-              'type': 'line', 
-              'name':'memory',
-              'fill':'tozeroy'
-            }
-          ]
-        })
+    ],id='tabs-content', className="wrapper"),
+    dcc.Interval(
+      id='interval-component',
+      interval=1*1000,
+      n_intervals = 0
+    )
+  ])
 
-    ])
-  elif tab == 'memoria':
-    return html.Div([
-
-    ])
-  elif tab == 'info':
-    return html.Div([
-
-    ])
-  elif tab == 'terminal':
-    return html.Div([
-
-    ])
+# @app.callback(Output('tabs-content', 'children'),
+#               Input('tabs', 'value'))
+# def render_content(tab):
+#   if tab == 'inicio':
+#     return 
 
 listaCPUx = list(range(60))
 listaCPUy = [0]*60
@@ -159,13 +206,17 @@ listaCPUy = [0]*60
 listaMEMx = list(range(60))
 listaMEMy = [0]*60
 
-@app.callback(Output('cpu-inicio-chart', 'figure'), Output('memoria-inicio-chart', 'figure'), Output('tbl_processos', 'data'),
-  Input('interval-component', 'n_intervals'))
+listaSWAPy = [0]*60
+
+@app.callback(Output('cpu-inicio-chart', 'figure'), Output('memoria-inicio-chart', 'figure'), Output('discos-inicio-chart', 'figure'), Output('tbl_processos', 'data'),
+  Output('label-cpu-usado','children' ), Output('label-mem-tot','children' ), Output('label-mem-usd','children' ),
+  Output('label-swp-tot','children' ), Output('label-swp-usd','children' ), Input('interval-component', 'n_intervals'))
 
 def update_inicio(n) :
 
   listaCPUy.pop(0)
-  listaCPUy.append(data.cpuData.getTotalUsage())
+  cpuUsado = data.cpuData.getTotalUsage()
+  listaCPUy.append(cpuUsado)
 
   cpu_chart_figure = {
     "data": [
@@ -173,7 +224,7 @@ def update_inicio(n) :
         'x': listaCPUx, 
         'y' : listaCPUy, 
         'type': 'line', 
-        'name':'memory',
+        'name':'uso',
         'fill':'tozeroy'
       }
     ],
@@ -186,7 +237,17 @@ def update_inicio(n) :
   _,dictMEM = data.memoryData.getMemStats();
   listaMEMy.pop(0)
 
-  listaMEMy.append((dictMEM["MemTotal"] - dictMEM["MemFree"]) * 100/dictMEM["MemTotal"])
+  memTotal = dictMEM["MemTotal"]
+  memUsado = (dictMEM["MemTotal"] - dictMEM["MemFree"])
+
+  swpTotal = dictMEM["SwapTotal"]
+  swpUsado = (dictMEM["SwapTotal"] - dictMEM["SwapFree"])
+
+  listaMEMy.append(memUsado * 100/memTotal)
+
+  listaSWAPy.pop(0)
+  listaSWAPy.append(swpUsado * 100/swpTotal)
+
 
   memoria_chart_figure = {
     "data": [
@@ -194,7 +255,14 @@ def update_inicio(n) :
         'x': listaMEMx, 
         'y' : listaMEMy, 
         'type': 'line', 
-        'name':'memory',
+        'name':'memoria',
+        'fill':'tozeroy'
+      },
+      {
+        'x': listaMEMx, 
+        'y' : listaSWAPy, 
+        'type': 'line', 
+        'name':'swap',
         'fill':'tozeroy'
       }
     ],
@@ -204,13 +272,58 @@ def update_inicio(n) :
     }
   }
 
+  discos_chart_figure = {
+    "data": [
+      {
+        #dados da parte livre de cada disco
+        'orientation': 'h',
+        'type': 'bar', 
+        'name':'usado',
+        'x': [140, 120, 100], 
+        'y':['disco 1', 'disco 2', 'disco 3']
+        
+      },
+      {
+        #dados da parte usada de cada disco
+        'orientation': 'h',
+        'type': 'bar', 
+        'name':'livre',
+        'x': [140, 160, 180], 
+        'y':['disco 1', 'disco 2', 'disco 3']
+      }
+    ],
+    "layout": {
+      "yaxis" : {"showgrid":False, 
+                 "showline": False, 
+                "showticklabels": True,
+                "zeroline": False,
+                "visible" : True
+                },
+      "xaxis" : {"showgrid":False, 
+                 "showline": False, 
+                 "showticklabels": False,
+                 "zeroline": False,
+                 "visible" : True
+                },
+      "barmode": "stack"
+    }
+  }
+
   _,data_pd = data.processesData.getProcesses()
 
   df_processo = pd.DataFrame.from_dict(data_pd)
   
-  return cpu_chart_figure, memoria_chart_figure, df_processo.to_dict('records')
+  return cpu_chart_figure, memoria_chart_figure, discos_chart_figure, df_processo.to_dict('records'), cpuUsado, memTotal, memUsado, swpTotal, swpUsado
 
-def execCmd(self, cmd: str):
+@app.callback(Output('output_div', 'children'),
+                  [Input('submit-button', 'n_clicks')],
+                  [State('comando', 'value')],
+                  )
+def update_output(clicks, input_value):
+        if clicks is not None:
+            return execCmd(input_value)
+
+def execCmd(cmd: str) -> str:
         proc = subprocess.Popen([cmd], stdout=subprocess.PIPE, shell=True, universal_newlines=True)
         (out, err) = proc.communicate()
         return out.strip()
