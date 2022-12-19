@@ -5,6 +5,7 @@ import sched, time
 from killSig import killSig
 from memData import memData
 from cpuData import cpuData
+from discData import discData
 from processesData import processesData
 
 
@@ -17,6 +18,7 @@ class systemData():
         self.memoryData = memData(db)
         self.cpuData = cpuData(db)
         self.processesData = processesData(db)
+        self.discData = discData(db)
 
         # criar thread
         self.threadName = "updateStats"
