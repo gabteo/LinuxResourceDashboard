@@ -4,7 +4,7 @@ import sys
 def loggerSetup():
         formatter = logging.Formatter('%(asctime)s [%(levelname)s] %(message)s (in module %(name)s).')
         
-        logging.basicConfig(level=logging.WARNING, format="%(asctime)s [%(levelname)s] %(message)s (in module %(name)s).", datefmt="%H:%M:%S")
+        logging.basicConfig(level=logging.DEBUG, format="%(asctime)s [%(levelname)s] %(message)s (in module %(name)s).", datefmt="%H:%M:%S")
         
 
         log = logging.getLogger()

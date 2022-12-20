@@ -38,7 +38,7 @@ class discData():
             self.listaName.append(dados[0])
             total = int(dados[8].replace("G",""))
             self.listaTotal.append(total)
-            livre = int(dados[12].replace("G",""))
+            livre = int(dados[11].replace("G",""))
             self.listaLivre.append(livre)
             usado = total - livre
             self.listaUsado.append(usado)

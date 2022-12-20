@@ -106,14 +106,6 @@ app.layout = html.Div(
               html.Div(children=["Disco 1 (kB)"], id="title-disc1",className="card-mini-title"),
               html.Div(children=["1"], id="label-disc1-usd", className="card-mini-content")
             ], className="card card-mini-disc"),
-            html.Div(children= [
-              html.Div(children=["Disco 2 (kB)"], id="title-disc2",className="card-mini-title"),
-              html.Div(children=["2"], id="label-disc2-usd", className="card-mini-content")
-            ], className="card card-mini-disc"),
-            html.Div(children= [
-              html.Div(children=["Disco 3 (kB)"], id="title-disc3", className="card-mini-title"),
-              html.Div(children=["3"], id="label-disc3-usd", className="card-mini-content")
-            ], className="card card-mini-disc"),
           ],
           className="card card-menor",
         ),
@@ -210,9 +202,7 @@ listaSWAPy = [0]*60
 
 @app.callback(Output('cpu-inicio-chart', 'figure'), Output('memoria-inicio-chart', 'figure'), Output('discos-inicio-chart', 'figure'), Output('tbl_processos', 'data'),
   Output('label-cpu-usado','children' ), Output('label-mem-tot','children' ), Output('label-mem-usd','children' ),
-  Output('label-swp-tot','children' ), Output('label-swp-usd','children' ), Output('title-disc1','children' ), Output('title-disc2','children' ),
-  Output('title-disc3','children' ), Output('label-disc1-usd','children' ),  Output('label-disc2-usd','children' ),  Output('label-disc3-usd','children' ),
-  Input('interval-component', 'n_intervals'))
+  Output('label-swp-tot','children' ), Output('label-swp-usd','children' ), Output('title-disc1','children' ), Output('label-disc1-usd','children' ), Input('interval-component', 'n_intervals'))
 
 def update_inicio(n) :
 
@@ -318,10 +308,8 @@ def update_inicio(n) :
   df_processo = pd.DataFrame.from_dict(data_pd)
 
   titleDisc1 = f"{listaName[0]} (GB)"
-  titleDisc2 = f"{listaName[1]} (GB)"
-  titleDisc3 = f"{listaName[2]} (GB)"
   
-  return cpu_chart_figure, memoria_chart_figure, discos_chart_figure, df_processo.to_dict('records'), cpuUsado, memTotal, memUsado, swpTotal, swpUsado, titleDisc1, titleDisc2, titleDisc3, listaUsado[0], listaUsado[1], listaUsado[2], 
+  return cpu_chart_figure, memoria_chart_figure, discos_chart_figure, df_processo.to_dict('records'), cpuUsado, memTotal, memUsado, swpTotal, swpUsado, titleDisc1, listaUsado[0], 
 
 @app.callback(Output('output_div', 'children'),
                   [Input('submit-button', 'n_clicks')],

@@ -60,7 +60,7 @@ class database():
 
 
     def memTableAddRow(self, memArray: list):
-        sql = """ INSERT INTO mem(memid, memtotal, memfree, memavailable, swaptotal, swapfree)
+        sql = """ INSERT OR IGNORE INTO mem(memid, memtotal, memfree, memavailable, swaptotal, swapfree)
                 VALUES(?,?,?,?,?,?)"""
         memArray.insert(0, self.getTimestamp())
         try:
