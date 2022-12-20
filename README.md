@@ -1,16 +1,22 @@
 # LinuxResourceDashboard
- A dashboard to monitor Linux resource usage
+ A dashboard to monitor the of the resources of a Linux System.
+
+ [![Linux](https://svgshare.com/i/Zhy.svg)](https://svgshare.com/i/Zhy.svg)
+ [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
+ [![made-with-bash](https://img.shields.io/badge/Made%20with-Bash-1f425f.svg)](https://www.gnu.org/software/bash/)
+
+> **Note**: <br/>Para informações detalhadas, consulte o arquivo do relatório final: [LinuxResourcesDashboard.pdf](LinuxResourcesDashboard.pdf) 
+
 
 ## Setup do projeto
-
-### Instalação venv
-Passo a passo para instalar e ativar ambiente virtual python.
+É necessário ter instalado o Python 3.
+No terminal, installe o Dash e o Plotly:
 ```bash
-python3 apt install python3.8-venv
-
-py -m venv virt
-source virt/bin/activate
+pip install dash
+pip install plotly==5.11.0
 ```
+
+
 
 #### Se estiver programando para Linux no Windows com VSCode
 É necessário WSL instalado.
@@ -21,38 +27,52 @@ No VSCode, instale o pack de extensões Remote Development (https://marketplace.
 ```bash
 code .
 ```
-Depois, o interpretador do venv deve estar disponível. Também pode ser configurado via "Python: select interpreter" no  
-command palette.
+## Execução
 
-### Instalando Tkinter
-```bash
-pip install tk
-```
-
-Se não funcionar, 
-```bash
-sudo apt-get install python3-tk
-```
-
-#### Instalando CustomTkinter UI-Library
-
-Biblioteca com interface mais bonita para tkinter.
-
-Documentação disponível em https://github.com/TomSchimansky/CustomTkinter
+Após clonar o repositório do github, acessar o diretório "dashApp"e executar o arquivo "dashboard.py"usando Python 3:
 
 ```bash
-pip3 install customtkinter
+cd dashApp
+python3 dashboard.py
 ```
 
-### Instalando o Kivy
-Instruções detalhadas podem ser encontradas em https://kivy.org/doc/stable/gettingstarted/installation.html#install-pip
+No navegador de sua preferência (Google Chrome é recomendado), acesse o endereço "http://127.0.0.1:8050/".
+
+Caso encontre problemas ao ao encerrar ou reiniciar o dashboard relacionados à porta 8050 que não foi fechado execute o comando
 
 ```bash
-python3 -m pip install "kivy[base]" kivy_examples
+lsof -i:8050 | grep python3
 ```
->"This also installs the minimum dependencies of Kivy. To additionally install Kivy with audio/video support, install either kivy[base,media] or kivy[full]. See Kivy’s dependencies for the list of selectors."
 
-### Playlists úteis
+E encerre o processo cujo PID é o primeiro da lista retornada pelo comando anterior. Por exem-
+plo, supondo que a saída seja:
+
+```bash
+python3 11970 gabriel    4u  IPv4 1274422      0t0  TCP localhost:8050 (LISTEN)
+python3 11970 gabriel    6u  IPv4 1274422      0t0  TCP localhost:8050 (LISTEN)
+python3 12042 gabriel    4u  IPv4 1274422      0t0  TCP localhost:8050 (LISTEN)
+python3 12042 gabriel    6u  IPv4 1274422      0t0  TCP localhost:8050 (LISTEN)
+```
+
+Execute
+
+```bash
+kill -9 11970
+```
+
+## Interface
+
+![Tela inicial](/assets/designReference/dashboard.jpg)
+
+Ao abrir o dashboard, vê-se a tela da figura acima. A interface tem áreas para CPU, memória,
+discos, informações do sistema e processos. Mais abaixo, rolando a tela, há um terminal, como
+mostra a figura seguinte.
+
+![Tela inicial](/assets/designReference/dashboard-terminal.jpg)
+
+> **IMPORTANTE:** para informações detalhadas, consulte o arquivo [LinuxResourcesDashboard.pdf](LinuxResourcesDashboard.pdf) 
+
+## Playlists úteis
 #### Python GUI's With Kivy
 by Codemy.com
 
@@ -69,7 +89,7 @@ by Codemy
 https://youtube.com/playlist?list=PLCC34OHNcOtoC6GglhF3ncJ5rLwQrLGnV
 
 
-### outras dashboards linux
+### Outros dashboards linux
 https://afaqurk.github.io/linux-dash/#/system-status
 
 
@@ -108,13 +128,13 @@ https://janakiev.com/blog/python-shell-commands/
 
 
 
-## Interface
+## Interface antiga
 
 ### Layout da tela principal
 
 ![Layout da tela principal](/assets/designReference/MainScreen.jpg)
 
-Interface até o momento:
+Interface antiga (Tkinter):
 
 ![Interface da tela principal](/assets/designReference/screenshoot-v0.jpg)
 
